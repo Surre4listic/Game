@@ -24,4 +24,14 @@ public class Player {
         Output.Send(message);
     }
 
+    int GiveDamage() {
+
+        int test = 100 + (level * 5);
+
+        System.out.println("attack for " + test);
+
+        return test;
+
+    }
+
 }

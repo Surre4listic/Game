@@ -1,4 +1,3 @@
-import java.util.Timer;
 
 class Mob {
 
@@ -8,8 +7,7 @@ class Mob {
     double balancetime = 2.0;
     boolean balance = true;
     boolean aggressive = false;
-    Balances balanceTimer;
-    Timer test;
+    Balances balances = new Balances();
 
     Mob(String name, int health, int damage, double balancetime, boolean aggressive) {
         this.name = name;
@@ -21,21 +19,31 @@ class Mob {
 
     void Attack() {
         if (this.balance) {
-            System.out.println(this.name + " attacks you for " + this.damage + ".");
-            this.balance = false;
 
-            balanceTimer = new Balances();
-            test = balanceTimer.Start(this.balancetime, this);
-        } else { System.out.println("PROBLEM!!");}
+            Main.player.health -= this.damage;
+            this.balance = false;
+            Output.Send(this.name + " attacks you for " + this.damage + ".");
+
+            balances.Start(this.balancetime, this);
+
+        } else {
+            // Should never end up here, and waiting for a solution if this happens.
+            System.out.println("PROBLEM!!");
+        }
     }
 
-    void Balance() {
+    void BalanceReturn() {
         this.balance = true;
         this.Attack();
     }
 
+    public void TimerRemove() {
+        this.balances.Cancel();
+    }
+
     public void Remove() {
-        test.cancel();
+        this.TimerRemove();
+        Main.player.room.mobs.remove(this);
     }
     
 }

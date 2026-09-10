@@ -3,18 +3,22 @@ import java.util.TimerTask;
 
 public class Balances {
 
-    Timer Start(Double balancetime, Mob mob) {
+    Timer timer;
 
-        Timer timer1 = new Timer();
-        timer1.schedule(new TimerTask() {
+    public void Start(Double balancetime, Mob mob) {
+        this.timer = new Timer();
+        timer.schedule(new TimerTask() {
         @Override
         public void run() {
-            mob.Balance();
+            mob.BalanceReturn();
         }
         }, (long)(balancetime * 1000));
 
-        return timer1;
+    }
 
+    // Cancel(Remove) timer for balance
+    public void Cancel() {
+        timer.cancel();
     }
     
 }

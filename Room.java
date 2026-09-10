@@ -12,31 +12,14 @@ public class Room {
     int mobRandom;
     ArrayList<Mob> mobs = new ArrayList<Mob>();
 
-    public Room() {
-    
-    }
-
+    // Call methods to populate and show the room when a new room is created
     public void New() {
         Populate();
         Show();
     }
 
-    public void Show() {
-        String showRoom = "";
-        for (int i = 0; i < mobs.size(); i++) {
-            showRoom += (showRoom.equals("")?"":" ") + mobs.get(i).name + (mobAmount <= 1 || mobAmount-1 == i?"":(mobAmount - 2 == i)?" and":",");
-        }
-        Output.Send((showRoom == "" ? "This room was empty." : "You see: " + showRoom + "."));
-    }   
-
+    // Populate the room with mobs
     public void Populate() {
-        // Clear list of mobs
-        for (Mob mob : mobs) {
-            if (mob.balanceTimer != null) {
-                mob.Remove();;
-            }
-        }
-        mobs = new ArrayList<Mob>();
         // Loop through and spawn mobs in room.
         for (int i = 1; i <= mobAmount; i++) {
            Spawn();
@@ -49,10 +32,31 @@ public class Room {
         }
     }
 
+    // Display the mobs in the room
+    public void Show() {
+        String showRoom = "";
+        for (int i = 0; i < mobs.size(); i++) {
+            showRoom += (showRoom.equals("")?"":" ") + mobs.get(i).name + (mobAmount <= 1 || mobAmount-1 == i?"":(mobAmount - 2 == i)?" and":",");
+        }
+        Output.Send((showRoom == "" ? "This room is empty." : "You see: " + showRoom + "."));
+    }  
+
+    // Clear the room of mobs and cancel their timers
+    public void Clear() {
+        for (Mob mob : mobs) {
+            System.out.print("Removing " + mob.name + " from room. ");
+            if (mob.balances != null) {
+                System.out.println("Removed timer for " + mob.name);
+                mob.TimerRemove();
+            }
+        }
+        mobs = new ArrayList<Mob>();
+    }
+
     public void Spawn() {
         // Set a random number(mob) from database
         mobRandom = (int)r.nextInt(DB.mobs.length);
-        //  Create an object referring to thise mob and save it to mobs arraylist
+        //  Create an object referring to this mob and save it to mobs arraylist
         mobs.add(
             new Mob(
                 (String)DB.mobs[mobRandom][0], 
@@ -61,6 +65,7 @@ public class Room {
                 (double)DB.mobs[mobRandom][3], 
                 (boolean)DB.mobs[mobRandom][4])
             );
+            
     }
     
 }
