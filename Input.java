@@ -18,7 +18,7 @@ public class Input {
         latestInput = cmd = cmd.toLowerCase();
         for (int i = 0; i < commands.length; i++) {
 
-            System.out.println(cmd + ":" + commands[i][0]);
+            // System.out.println(cmd + ":" + commands[i][0]);
 
             // Check cmd
             if (cmd.equals(commands[i][0]) || (cmd.contains(commands[i][0].toString()) && (boolean)commands[i][5])) {
@@ -73,9 +73,10 @@ public class Input {
                 mob.health -= Main.player.GiveDamage();
                 System.out.println("Health after: " + mob.health);
                 if (mob.health <= 0) { mob.Remove(); }
-                break;
+                return;
             } else {
                 Output.Send("Can't find " + latestInput.replace("attack ", "") + " to attack.");
+                return;
             }
         }
     }

@@ -3,14 +3,16 @@ import java.util.TimerTask;
 
 public class Balances {
 
-    Timer timer;
+    boolean balance = true;
+    private Timer timer;
 
-    public void Start(Double balancetime, Mob mob) {
+    public void Start(Double balancetime) {
+        this.balance = false;
         this.timer = new Timer();
         timer.schedule(new TimerTask() {
         @Override
         public void run() {
-            mob.BalanceReturn();
+            Balances.this.balance = true;
         }
         }, (long)(balancetime * 1000));
 
@@ -18,7 +20,10 @@ public class Balances {
 
     // Cancel(Remove) timer for balance
     public void Cancel() {
-        timer.cancel();
+        // Make sure there is a timer to cancel, otherwise it will throw an error.
+        if (this.timer != null) {
+            this.timer.cancel();
+        }
     }
     
 }

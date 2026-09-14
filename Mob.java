@@ -5,7 +5,6 @@ class Mob {
     int health = 50;
     int damage = 5;
     double balancetime = 2.0;
-    boolean balance = true;
     boolean aggressive = false;
     Balances balances = new Balances();
 
@@ -18,13 +17,11 @@ class Mob {
     }
 
     void Attack() {
-        if (this.balance) {
+        if (this.balances.balance) {
 
             Main.player.health -= this.damage;
-            this.balance = false;
             Output.Send(this.name + " attacks you for " + this.damage + ".");
-
-            balances.Start(this.balancetime, this);
+            balances.Start(this.balancetime);
 
         } else {
             // Should never end up here, and waiting for a solution if this happens.
@@ -32,18 +29,16 @@ class Mob {
         }
     }
 
-    void BalanceReturn() {
-        this.balance = true;
-        this.Attack();
-    }
 
     public void TimerRemove() {
         this.balances.Cancel();
     }
 
     public void Remove() {
+        System.out.println(this.name + " 1has been removed from the room.");
         this.TimerRemove();
         Main.player.room.mobs.remove(this);
+        System.out.println(this.name + " 2 has been removed from the room.");
     }
     
 }

@@ -26,7 +26,7 @@ public class Room {
         }
         // Check for aggressive creatures
         for (Mob mob : mobs) {
-            if (mob.aggressive && mob.balance) {
+            if (mob.aggressive && mob.balances.balance) {
                 mob.Attack();
             }
         }
@@ -44,9 +44,7 @@ public class Room {
     // Clear the room of mobs and cancel their timers
     public void Clear() {
         for (Mob mob : mobs) {
-            System.out.print("Removing " + mob.name + " from room. ");
             if (mob.balances != null) {
-                System.out.println("Removed timer for " + mob.name);
                 mob.TimerRemove();
             }
         }
