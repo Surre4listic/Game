@@ -11,10 +11,10 @@ public class Main {
         // Get player name and create a new player object with that name.
         System.out.print(" Please choose a name for your character: ");
         Main.player = new Player(readInput.nextLine());
-        Output.Send(" Welcome to the game, " + player.name + "!");
-        player.room.New();
+        Output.Send("Welcome to the game, " + player.name + "!\n Too see possible commands write help.");
+        player.room.New(false);
 
-        while (player.input.Get(readInput.nextLine())) {;}
+        while (player.input.Get(readInput.nextLine())) {}
         
         readInput.close();
 

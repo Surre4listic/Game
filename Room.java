@@ -18,6 +18,11 @@ public class Room {
         Show();
     }
 
+    // Call methods to populate and show the room when a new room is created
+    public void New(Boolean show) {
+        Show();
+    }
+
     // Populate the room with mobs
     public void Populate() {
         // Loop through and spawn mobs in room.
@@ -26,7 +31,8 @@ public class Room {
         }
         // Check for aggressive creatures
         for (Mob mob : mobs) {
-            if (mob.aggressive && mob.balances.balance) {
+            System.out.println(mob.name + " is aggressive: " + mob.isAggressive + ". Balance: " + mob.balances.isBalance);
+            if (mob.isAggressive && mob.balances.isBalance) {
                 mob.Attack();
             }
         }
@@ -61,7 +67,8 @@ public class Room {
                 (int)DB.mobs[mobRandom][1], 
                 (int)DB.mobs[mobRandom][2], 
                 (double)DB.mobs[mobRandom][3], 
-                (boolean)DB.mobs[mobRandom][4])
+                (int)DB.mobs[mobRandom][4],
+                (boolean)DB.mobs[mobRandom][5])
             );
             
     }

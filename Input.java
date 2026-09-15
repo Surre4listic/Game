@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 public class Input {
 
@@ -7,7 +6,9 @@ public class Input {
     private Object[][] commands = {
         // command, description, output, method, partialsearch
         {"move", "Move you into another room.", "You moved into another room.", (Runnable) (() -> this.Move())},
+        {"rest", "Rest to generate health.", null, (Runnable) (() -> this.Rest())},
         {"help", "Shows a list of commands.", null, (Runnable) (() -> this.Help())},
+        {"look", "Look around the room.", null, (Runnable) (() -> this.Look())},
         {"exit", "Exits the game.", "You have exited the game.", (Runnable) (() -> this.Exit())},
         {"attack", "Attack <creature>.", null, (Runnable) (() -> this.Attack()), null, true}
         };
@@ -50,37 +51,28 @@ public class Input {
     void Exit() { System.exit(0);}
 
     void Move() {
+        if (!Main.player.sleeping.isBalance) {
+            Output.Send("You are resting and cannot move.");
+            return;
+        } else if (!Main.player.balance.isBalance) {
+            Output.Send("You are off balance and cannot move.");
+            return;
+        }
         Main.player.room.Clear();
         Main.player.room = new Room();
         Main.player.room.New();
     }
 
-
-    void Attack() {
-
-        ArrayList<Mob> asdf = Main.player.room.mobs;  
-        for (int i = 0; i < 0; i++) {
-            
-        }
-
-
-        for (Mob mob : Main.player.room.mobs) {
-
-            if (mob.name.toLowerCase().equals(latestInput.replace("attack ", "").toLowerCase()) && mob.health > 0) {
-
-                Output.Send("You attacked " + mob.name + (mob.health <= 0  ? " and it falls helplessly to the ground dead." : "."));
-                System.out.println("Health before: " + mob.health);
-                mob.health -= Main.player.GiveDamage();
-                System.out.println("Health after: " + mob.health);
-                if (mob.health <= 0) { mob.Remove(); }
-                return;
-            } else {
-                Output.Send("Can't find " + latestInput.replace("attack ", "") + " to attack.");
-                return;
-            }
-        }
+    void Look() {
+        Main.player.room.Show();
     }
 
+    void Attack() {
+        Main.player.GiveDamage(latestInput);
+    }
 
+    void Rest() {
+        Main.player.new Rest();
+    }
 
 }

@@ -3,19 +3,25 @@ import java.util.TimerTask;
 
 public class Balances {
 
-    boolean balance = true;
+    boolean isBalance = true;
     private Timer timer;
+    Object caller;
 
-    public void Start(Double balancetime) {
-        this.balance = false;
+    // Start timer for balance
+    public void Start(Double balancetime, Object caller) {
+        this.isBalance = false;
         this.timer = new Timer();
         timer.schedule(new TimerTask() {
         @Override
         public void run() {
-            Balances.this.balance = true;
+            Balances.this.isBalance = true;
+            try {
+                caller.getClass().getMethod("Reset").invoke(caller);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         }, (long)(balancetime * 1000));
-
     }
 
     // Cancel(Remove) timer for balance
@@ -25,5 +31,6 @@ public class Balances {
             this.timer.cancel();
         }
     }
+
     
 }
